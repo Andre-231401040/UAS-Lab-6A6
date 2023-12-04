@@ -3,7 +3,7 @@ program gameDadu;
 uses crt;
 
 var
-jmlhPemain, skorTarget : integer;
+i, jmlhPemain, skorTarget : integer;
 skorPemain, selisihSkor : array of integer;
 namaPemain : array of string;
 
@@ -14,7 +14,21 @@ begin
     lemparDadu := random(5)+1;
 end;
 
-//prosedur pemain sedang bermain dan akumulasi skor
+//prosedur bermain dan akumulasi skor
+procedure bermain(jmlhPemain : integer);
+var
+j, angkaDadu : integer;
+begin
+    for j := 0 to jmlhPemain - 1 do
+        begin
+            writeln('Pemain ke-',j+1);
+            angkaDadu := lemparDadu;
+            skorPemain[j] += angkaDadu;
+            writeln('Dadu anda bernilai ',angkaDadu);
+            writeln('Skor anda saat ini: ',skorPemain[j]);
+            readkey;
+        end;
+end;
 
 //prosedur mencari selisih
 
@@ -34,13 +48,26 @@ begin
     readln(jmlhPemain);
     write('Masukkan skor target: ');
     readln(skorTarget);
-    
     //menentukan ukuran array berdasarkan jumlah pemain
     setlength(namaPemain, jmlhPemain);
     setlength(skorPemain, jmlhPemain);
     setlength(selisihSkor, jmlhPemain);
 
-    //memanggil prosedur bermain dan akumulasi skor masing-masing pemain
+    //tambah nama pemain
+    for i := 0 to jmlhPemain - 1 do
+        begin
+            skorPemain[i] := 0;
+            write('Nama pemain ke-',i+1,' : ');
+            readln(namaPemain[i]);
+        end;
+
+    //memanggil prosedur bermain dan akumulasi skor
+    i := 1;
+    while(i <= 3) do
+        begin
+            bermain(jmlhPemain);
+            i += 1;
+        end;
 
     //memanggil prosedur mencari selisih skor pemain dan skor target
 
@@ -52,5 +79,5 @@ begin
 
         //jika tidak
             //end
-            
+
 end.
