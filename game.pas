@@ -5,16 +5,37 @@ uses crt;
 var
 jmlhPemain, skorTarget : integer;
 skorPemain, selisihSkor : array of integer;
+lemparDadu : array of byte;
 namaPemain : array of string;
-
+i,j : integer;
 //function acak dadu
-function lemparDadu:integer;
+//function lemparDadu: byte;
+procedure Dadu;
 begin
+    setlength(lemparDadu, 3*jmlhPemain);
     randomize;
-    lemparDadu := random(5)+1;
+    for i := 1 to 3*jmlhPemain do
+    begin
+        lemparDadu[i] := random(5)+1;
+    end;
 end;
 
 //prosedur pemain sedang bermain dan akumulasi skor
+procedure akumulasiSkor;
+begin
+    for i:=1 to jmlhPemain do 
+    begin
+        skorPemain[i] := 0;
+        for j:= ((3*i)-2) to 3*i do 
+        begin
+            writeln('Dadu ke- ',((j-1) mod 3) +1,' : ',lemparDadu[j]);
+            skorPemain[i] := skorPemain[i] + lemparDadu[j];
+            readkey;
+        end;
+        writeln('Total Skor Pemain ',i,' adalah ',skorPemain[i]);
+        readkey;
+    end; 
+end;
 
 //prosedur mencari selisih
 
@@ -41,6 +62,8 @@ begin
     setlength(selisihSkor, jmlhPemain);
 
     //memanggil prosedur bermain dan akumulasi skor masing-masing pemain
+    Dadu;
+    akumulasiSkor;
 
     //memanggil prosedur mencari selisih skor pemain dan skor target
 
