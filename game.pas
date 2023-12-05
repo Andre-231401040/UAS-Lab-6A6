@@ -49,10 +49,11 @@ begin
         end;
 end;
 
-//prosedur mengurutkan selisih dari yang terkecil sampai terbesar
+//prosedur mengurutkan selisih dari yang terkecil sampai terbesar dan ranking pemain
 procedure sort(jmlhPemain : integer);
 var
-i, j, temp : integer;
+i, j, temp1,temp3 : integer;
+temp2 : string;
 begin
     for i := 0 to jmlhPemain - 2 do
         begin
@@ -60,15 +61,36 @@ begin
                 begin
                     if(selisihSkor[j] < selisihSkor[i]) then
                         begin
-                            temp := selisihSkor[i];
+                            temp1 := selisihSkor[i];
                             selisihSkor[i] := selisihSkor[j];
-                            selisihSkor[j] := temp;
+                            selisihSkor[j] := temp1;
+                            temp2 := namaPemain[i];
+                            namaPemain[i] := namaPemain[j];
+                            namaPemain[j] := temp2;
+                            temp3 := skorPemain[i];
+                            skorPemain[i] := skorPemain[j];
+                            skorPemain[j] := temp3;
                         end;
                 end;
         end;
 end;
 
 //prosedur tampilkan pemenang
+procedure tampilkanPemenang(jmlhPemain : integer);
+var
+i : integer;
+begin
+    for i := 0 to jmlhPemain - 1 do 
+        begin
+            gotoXY(1,i+5);writeln(i+1);
+            gotoXY(9,i+5);writeln('|');
+            gotoXY(11,i+5);writeln(namaPemain[i]);
+            gotoXY(30,i+5);writeln('|');
+            gotoXY(32,i+5);writeln(skorPemain[i]);
+            gotoXY(37,i+5);writeln('|');
+            gotoXY(39,i+5);writeln(selisihSkor[i]);
+        end;
+end;
 
 //prosedur cek ada atau tidaknya tie breaker
 
@@ -114,7 +136,18 @@ begin
     sort(jmlhPemain);
 
     //cari pemenang berdasarkan selisih terkecil dan tampilkan pemenang
-
+    clrscr;
+    writeln('Skor Target : ', skorTarget); 
+    writeln('===================================================');
+    gotoXY(1,3);writeln('Ranking');
+    gotoXY(9,3);writeln('|');
+    gotoXY(11,3);writeln('Nama');
+    gotoXY(30,3);writeln('|');
+    gotoXY(32,3);writeln('Skor');
+    gotoXY(37,3);writeln('|');
+    gotoXY(39,3);writeln('SelisihSkor');
+    writeln('===================================================');
+    tampilkanPemenang(jmlhPemain);
     //cek ada tie breaker atau engga
         //jika ada
             //memanggil prosedur untuk game tie breaker dan tampilkan pemenang setelah tie breaker
