@@ -17,20 +17,56 @@ end;
 //prosedur bermain dan akumulasi skor
 procedure bermain(jmlhPemain : integer);
 var
-j, angkaDadu : integer;
+i, angkaDadu : integer;
 begin
-    for j := 0 to jmlhPemain - 1 do
+    for i := 0 to jmlhPemain - 1 do
         begin
-            writeln('Pemain ke-',j+1);
+            writeln('Pemain ke-',i+1);
             angkaDadu := lemparDadu;
-            skorPemain[j] += angkaDadu;
+            skorPemain[i] += angkaDadu;
             writeln('Dadu anda bernilai ',angkaDadu);
-            writeln('Skor anda saat ini: ',skorPemain[j]);
+            writeln('Skor anda saat ini: ',skorPemain[i]);
             readkey;
+            writeln;
         end;
 end;
 
 //prosedur mencari selisih
+procedure mencariSelisih(jmlhPemain : integer);
+var
+i : integer;
+begin
+    for i:= 0 to jmlhPemain -1 do
+        begin
+            if(skorPemain[i] <= skorTarget) then
+                begin
+                    selisihSkor[i] := skorTarget - skorPemain[i];
+                end
+            else
+                begin
+                    selisihSkor[i] := skorPemain[i] - skorTarget;
+                end;
+        end;
+end;
+
+//prosedur mengurutkan selisih dari yang terkecil sampai terbesar
+procedure sort(jmlhPemain : integer);
+var
+i, j, temp : integer;
+begin
+    for i := 0 to jmlhPemain - 2 do
+        begin
+            for j := i+1 to jmlhPemain - 1 do
+                begin
+                    if(selisihSkor[j] < selisihSkor[i]) then
+                        begin
+                            temp := selisihSkor[i];
+                            selisihSkor[i] := selisihSkor[j];
+                            selisihSkor[j] := temp;
+                        end;
+                end;
+        end;
+end;
 
 //prosedur tampilkan pemenang
 
@@ -54,6 +90,7 @@ begin
     setlength(selisihSkor, jmlhPemain);
 
     //tambah nama pemain
+    writeln;
     for i := 0 to jmlhPemain - 1 do
         begin
             skorPemain[i] := 0;
@@ -61,7 +98,8 @@ begin
             readln(namaPemain[i]);
         end;
 
-    //memanggil prosedur bermain dan akumulasi skor
+    clrscr;
+    //bermain dan akumulasi skor
     i := 1;
     while(i <= 3) do
         begin
@@ -69,9 +107,13 @@ begin
             i += 1;
         end;
 
-    //memanggil prosedur mencari selisih skor pemain dan skor target
+    //mencari selisih skor pemain dan skor target
+    mencariSelisih(jmlhPemain);
 
-    //memanggil prosedur mencari pemenang dan tampilkan pemenang
+    //mengurutkan selisih dari yang terkecil sampai terbesar
+    sort(jmlhPemain);
+
+    //cari pemenang berdasarkan selisih terkecil dan tampilkan pemenang
 
     //cek ada tie breaker atau engga
         //jika ada
