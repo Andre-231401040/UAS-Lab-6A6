@@ -147,7 +147,7 @@ begin
     //mencari selisih skor pemain dan skor target
     mencariSelisih(jmlhPemain);
 
-    //mengurutkan selisih dari yang terkecil sampai terbesar
+    //mengurutkan selisih dari yang terkecil sampai terbesar dan ranking pemain
     sort(jmlhPemain);
 
     //cari pemenang berdasarkan selisih terkecil dan tampilkan pemenang
