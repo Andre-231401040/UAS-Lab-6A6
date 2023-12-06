@@ -1,21 +1,19 @@
 program gameDadu;
-
 uses crt;
-
 var
-i, jmlhPemain, skorTarget : integer;
+i, x : integer;
+jmlhPemain, skorTarget ,banyakSeri: byte; 
 skorPemain, selisihSkor : array of integer;
-namaPemain : array of string;
-
+namaPemain, pemainSeri : array of string;
+tie : boolean;
 //function acak dadu
-function lemparDadu:integer;
+function lemparDadu:byte;
 begin
     randomize;
     lemparDadu := random(5)+1;
 end;
-
 //prosedur bermain dan akumulasi skor
-procedure bermain(jmlhPemain : integer);
+procedure bermain(jmlhPemain : byte);
 var
 i, angkaDadu : integer;
 begin
@@ -30,11 +28,9 @@ begin
             writeln;
         end;
 end;
-
 //prosedur mencari selisih
-procedure mencariSelisih(jmlhPemain : integer);
-var
-i : integer;
+procedure mencariSelisih(jmlhPemain : byte);
+
 begin
     for i:= 0 to jmlhPemain -1 do
         begin
@@ -49,10 +45,12 @@ begin
         end;
 end;
 
+//prosedur mengurutkan selisih dari yang terkecil sampai terbesar
 //prosedur mengurutkan selisih dari yang terkecil sampai terbesar dan ranking pemain
-procedure sort(jmlhPemain : integer);
+procedure sort(jmlhPemain : byte);
 var
-i, j, temp1,temp3 : integer;
+j, temp : byte;
+temp1,temp3 : byte;
 temp2 : string;
 begin
     for i := 0 to jmlhPemain - 2 do
@@ -61,8 +59,10 @@ begin
                 begin
                     if(selisihSkor[j] < selisihSkor[i]) then
                         begin
+                            temp := selisihSkor[i];
                             temp1 := selisihSkor[i];
                             selisihSkor[i] := selisihSkor[j];
+                            selisihSkor[j] := temp;
                             selisihSkor[j] := temp1;
                             temp2 := namaPemain[i];
                             namaPemain[i] := namaPemain[j];
@@ -76,9 +76,8 @@ begin
 end;
 
 //prosedur tampilkan pemenang
-procedure tampilkanPemenang(jmlhPemain : integer);
-var
-i : integer;
+procedure tampilkanPemenang(jmlhPemain : byte);
+
 begin
     for i := 0 to jmlhPemain - 1 do 
         begin
@@ -93,8 +92,61 @@ begin
 end;
 
 //prosedur cek ada atau tidaknya tie breaker
+procedure cek;
+var banyak : byte;
+begin
+    setlength(pemainSeri, 5);
+    banyak := 0;
+    for i := 1 to jmlhPemain-1 do 
+    begin
+        if selisihSkor[i] = selisihSkor[i+1] then
+        begin
+            tie := true;
+            banyak := banyak + 1;
+            pemainSeri[i] := namaPemain[i];
+            pemainSeri[i+1] := namaPemain[i+1];
+            x := i;
+        end;
+    end;
+    banyakSeri := banyak + 1;
+end;
 
 //prosedur game tie breaker
+procedure tiebreaker;
+var j, k, skorPemainSeri, temp5  : byte;
+    temp4 : array [1..5] of byte;
+begin 
+    writeln;
+    writeln('Game Tiebreaker');
+    for k := 0 to banyakSeri-1 do
+    begin
+        skorPemainSeri := lemparDadu;
+        temp4[k] := skorPemainSeri;
+        writeln('Dadu ',pemainSeri[x+k],' : ', skorPemainSeri);
+        readkey;
+    end;
+    k := 0;
+    for i := 0 to banyakSeri-2 do
+    begin
+        for j := 1 to banyakSeri-1 do
+        begin
+            if(temp4[j] > temp4[i]) then
+            begin
+                temp5 := temp4[i];
+                temp4[i] := temp4[j];
+                temp4[j] := temp5;
+            end;
+        end;
+    end;
+    for k := 0 to banyakSeri-1 do
+        writeln ('Ranking ',x+k+1,' : ', pemainSeri[x+k],' ,skor ', temp4[k]);
+    k := 0;
+    for k := 0 to banyakSeri-1 do
+    begin
+        if temp4[k] = temp4[k+1] then
+            tiebreaker;
+    end;
+end;
 
 begin
     writeln('===========================================');
@@ -110,7 +162,6 @@ begin
     setlength(namaPemain, jmlhPemain);
     setlength(skorPemain, jmlhPemain);
     setlength(selisihSkor, jmlhPemain);
-
     //tambah nama pemain
     writeln;
     for i := 0 to jmlhPemain - 1 do
@@ -119,7 +170,6 @@ begin
             write('Nama pemain ke-',i+1,' : ');
             readln(namaPemain[i]);
         end;
-
     clrscr;
     //bermain dan akumulasi skor
     i := 1;
@@ -128,14 +178,13 @@ begin
             bermain(jmlhPemain);
             i += 1;
         end;
-
     //mencari selisih skor pemain dan skor target
     mencariSelisih(jmlhPemain);
-
     //mengurutkan selisih dari yang terkecil sampai terbesar
     sort(jmlhPemain);
 
     //cari pemenang berdasarkan selisih terkecil dan tampilkan pemenang
+
     clrscr;
     writeln('Skor Target : ', skorTarget); 
     writeln('===================================================');
@@ -149,10 +198,12 @@ begin
     writeln('===================================================');
     tampilkanPemenang(jmlhPemain);
     //cek ada tie breaker atau engga
+    cek;
         //jika ada
+        if tie = true then
             //memanggil prosedur untuk game tie breaker dan tampilkan pemenang setelah tie breaker
-
+            tiebreaker
         //jika tidak
+        else 
             //end
-
 end.
