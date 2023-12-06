@@ -2,7 +2,10 @@ program gameDadu;
 
 uses crt;
 
+label awal;
+
 var
+jawaban : char;
 i, jmlhPemain, skorTarget : integer;
 skorPemain, selisihSkor : array of integer;
 namaPemain : array of string;
@@ -21,7 +24,7 @@ i, angkaDadu : integer;
 begin
     for i := 0 to jmlhPemain - 1 do
         begin
-            writeln('Pemain ke-',i+1);
+            writeln('Pemain ke-',i+1,' atau ',namaPemain[i]);
             angkaDadu := lemparDadu;
             skorPemain[i] += angkaDadu;
             writeln('Dadu anda bernilai ',angkaDadu);
@@ -92,11 +95,9 @@ begin
         end;
 end;
 
-//prosedur cek ada atau tidaknya tie breaker
-
-//prosedur game tie breaker
-
 begin
+    awal:
+    clrscr;
     writeln('===========================================');
     writeln('Selamat Datang di Game Dadu Kelompok 6A6!!!');
     writeln('===========================================');
@@ -104,6 +105,18 @@ begin
     writeln;
     write('Masukkan jumlah pemain: ');
     readln(jmlhPemain);
+    if(jmlhPemain > 5) then
+        begin
+            writeln('Jumlah pemain yang anda masukkan lebih banyak dari ketentuan');
+            readln;
+            goto awal;
+        end
+    else if(jmlhPemain < 2) then
+        begin
+            writeln('Jumlah pemain yang dimasukkan minimal 2 orang');
+            readln;
+            goto awal;
+        end;
     write('Masukkan skor target: ');
     readln(skorTarget);
     //menentukan ukuran array berdasarkan jumlah pemain
@@ -125,6 +138,8 @@ begin
     i := 1;
     while(i <= 3) do
         begin
+            clrscr;
+            writeln('Putaran ke-',i);
             bermain(jmlhPemain);
             i += 1;
         end;
@@ -148,11 +163,16 @@ begin
     gotoXY(39,3);writeln('SelisihSkor');
     writeln('===================================================');
     tampilkanPemenang(jmlhPemain);
-    //cek ada tie breaker atau engga
-        //jika ada
-            //memanggil prosedur untuk game tie breaker dan tampilkan pemenang setelah tie breaker
 
-        //jika tidak
-            //end
+    //bertanya kepada user apakah ingin mengulang atau tidak
+    write('Apakah ingin lanjut bermain (Y/T): ');
+    readln(jawaban);
 
+    jawaban := upcase(jawaban);
+
+    if(jawaban = 'Y') then
+        begin
+            goto awal;
+        end;
+    writeln('TERIMA KASIH SUDAH MENCOBA GAME KAMI!!!');
 end.
