@@ -150,7 +150,7 @@ begin
     //mengurutkan selisih dari yang terkecil sampai terbesar dan ranking pemain
     sort(jmlhPemain);
 
-    //cari pemenang berdasarkan selisih terkecil dan tampilkan pemenang
+    //tampilkan pemenang
     clrscr;
     writeln('Skor Target : ', skorTarget); 
     writeln('===================================================');
