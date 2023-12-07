@@ -109,11 +109,14 @@ begin
                     selisihSkorPesertaTieBreak[jumlahPemainTieBreaker] := selisihSkor[i];
                     jumlahPemainTieBreaker += 1;
                 end
-            else if(selisihSkor[i] = selisihSkor[i-1]) then
+            else if(i > 0) then
                 begin
-                    pemainTieBreaker[jumlahPemainTieBreaker] := namaPemain[i];
-                    selisihSkorPesertaTieBreak[jumlahPemainTieBreaker] := selisihSkor[i];
-                    jumlahPemainTieBreaker += 1;
+                    if(selisihSkor[i] = selisihSkor[i-1]) then
+                        begin
+                            pemainTieBreaker[jumlahPemainTieBreaker] := namaPemain[i];
+                            selisihSkorPesertaTieBreak[jumlahPemainTieBreaker] := selisihSkor[i];
+                            jumlahPemainTieBreaker += 1;
+                        end;
                 end;
         end;
 end;
